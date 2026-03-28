@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NM-Scheduler — NMIMS University</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <span>SVKM's NMIMS University — Academic Scheduling System</span>
+    <div class="topbar-right">
+      <span id="liveClock" class="topbar-clock"></span>
+      <button id="darkModeBtn" class="theme-toggle" title="Toggle theme">
+        <span class="theme-icon">🌙</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="header-brand">
+        <div class="brand-logo-wrap">
+          <img src="nmims-logo.png" alt="NMIMS Logo" class="brand-logo" />
+        </div>
+        <div class="brand-text">
+          <h1 class="brand-title">NM-Scheduler</h1>
+          <p class="brand-sub">Intelligent Timetable Generation System &nbsp;·&nbsp; v2.0</p>
+        </div>
+      </div>
+      <div class="header-meta">
+        <div class="meta-chip">
+          <span class="meta-dot active"></span>
+          System Ready
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- BREADCRUMB / STEP TRAIL -->
+  <div class="step-trail">
+    <div class="step-trail-inner">
+      <div class="step-pill active" id="step1pill">
+        <span class="step-num">01</span>
+        <span class="step-label">Upload Data</span>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-pill" id="step2pill">
+        <span class="step-num">02</span>
+        <span class="step-label">Configure</span>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-pill" id="step3pill">
+        <span class="step-num">03</span>
+        <span class="step-label">Generate</span>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-pill" id="step4pill">
+        <span class="step-num">04</span>
+        <span class="step-label">Review & Export</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <main class="site-main">
+
+    <!-- LEFT PANEL -->
+    <aside class="panel-aside">
+
+      <!-- STEP 1 -->
+      <div class="card" id="cardUpload">
+        <div class="card-header">
+          <div class="card-icon">01</div>
+          <div>
+            <h2 class="card-title">Upload Data Files</h2>
+            <p class="card-desc">Supported formats: CSV, XLSX</p>
+          </div>
+        </div>
+
+        <div class="upload-zone" id="dropTeacher">
+          <div class="upload-zone-icon">📂</div>
+          <div class="upload-zone-text">
+            <strong>Teacher Availability</strong>
+            <span>Drag & drop or click to upload</span>
+            <code>Teacher · Day · Period</code>
+          </div>
+          <input type="file" id="teacherFile" accept=".csv,.xlsx" />
+          <div class="upload-status" id="statusTeacher">No file selected</div>
+        </div>
+
+        <div class="upload-zone" id="dropSubject">
+          <div class="upload-zone-icon">📋</div>
+          <div class="upload-zone-text">
+            <strong>Subject Requirements</strong>
+            <span>Drag & drop or click to upload</span>
+            <code>Class · Subject · Teacher · HoursPerWeek</code>
+          </div>
+          <input type="file" id="subjectFile" accept=".csv,.xlsx" />
+          <div class="upload-status" id="statusSubject">No file selected</div>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="card" id="cardSettings">
+        <div class="card-header">
+          <div class="card-icon">02</div>
+          <div>
+            <h2 class="card-title">Schedule Configuration</h2>
+            <p class="card-desc">Define timetable parameters</p>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-field">
+            <label class="field-label" for="periodsPerDay">
+              <span class="label-icon">⏱</span> Periods Per Day
+            </label>
+            <div class="field-input-wrap">
+              <input type="number" id="periodsPerDay" value="6" min="1" max="10" />
+              <span class="field-unit">periods</span>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label class="field-label" for="workingDays">
+              <span class="label-icon">📆</span> Working Days
+            </label>
+            <select id="workingDays">
+              <option value="5">Mon – Fri (5 days)</option>
+              <option value="6">Mon – Sat (6 days)</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label class="field-label" for="maxHoursPerDay">
+              <span class="label-icon">👩‍🏫</span> Max Teacher Hours
+            </label>
+            <div class="field-input-wrap">
+              <input type="number" id="maxHoursPerDay" value="4" min="1" max="8" />
+              <span class="field-unit">hrs/day</span>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label class="field-label" for="lunchPeriod">
+              <span class="label-icon"></span> Lunch After Period
+            </label>
+            <select id="lunchPeriod">
+              <option value="0">No lunch break</option>
+              <option value="2">Period 2</option>
+              <option value="3" selected>Period 3</option>
+              <option value="4">Period 4</option>
+              <option value="5">Period 5</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="info-note">
+          <span class="note-icon">ℹ</span>
+          The selected period will be reserved as a lunch break across all classes and days.
+        </div>
+      </div>
+
+      <!-- GENERATE -->
+      <div class="generate-wrap">
+        <button id="generateBtn" class="btn-generate">
+          <span class="btn-icon">⚡</span>
+          <span class="btn-text">Generate Timetable</span>
+          <span class="btn-sub">Using DSA algorithms</span>
+        </button>
+        <div class="algo-tags">
+          <span class="algo-tag">Hash Map</span>
+          <span class="algo-tag">Priority Queue</span>
+          <span class="algo-tag">Binary Search</span>
+          <span class="algo-tag">Graph Coloring</span>
+          <span class="algo-tag">Greedy DP</span>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- RIGHT PANEL -->
+    <section class="panel-main" id="panelMain">
+
+      <!-- PLACEHOLDER -->
+      <div class="placeholder-state" id="placeholderState">
+        <div class="placeholder-graphic">
+          <div class="ph-grid">
+            <div class="ph-cell filled"></div>
+            <div class="ph-cell"></div>
+            <div class="ph-cell filled"></div>
+            <div class="ph-cell filled"></div>
+            <div class="ph-cell"></div>
+            <div class="ph-cell filled"></div>
+            <div class="ph-cell filled"></div>
+            <div class="ph-cell filled"></div>
+            <div class="ph-cell"></div>
+            <div class="ph-cell lunch"></div>
+            <div class="ph-cell lunch"></div>
+            <div class="ph-cell lunch"></div>
+            <div class="ph-cell"></div>
+            <div class="ph-cell filled"></div>
+            <div class="ph-cell filled"></div>
+          </div>
+        </div>
+        <h3>Your timetable will appear here</h3>
+        <p>Upload your data files, configure the settings on the left, then click <strong>Generate Timetable</strong> to get started.</p>
+        <div class="placeholder-steps">
+          <div class="ph-step">
+            <span>1</span> Upload CSVs
+          </div>
+          <div class="ph-arrow">→</div>
+          <div class="ph-step">
+            <span>2</span> Set parameters
+          </div>
+          <div class="ph-arrow">→</div>
+          <div class="ph-step">
+            <span>3</span> Generate &amp; export
+          </div>
+        </div>
+      </div>
+
+      <!-- OUTPUT (hidden until generated) -->
+      <div id="outputArea" style="display:none;">
+
+        <!-- TOOLBAR -->
+        <div class="output-toolbar">
+          <div class="toolbar-left">
+            <div class="search-wrap">
+              <span class="search-icon">🔍</span>
+              <input type="text" id="searchInput" placeholder="Search teacher or subject…" />
+              <select id="searchType">
+                <option value="all">All</option>
+                <option value="teacher">Teacher</option>
+                <option value="subject">Subject</option>
+              </select>
+              <button id="clearSearch" class="btn-ghost">Clear</button>
+            </div>
+          </div>
+          <div class="toolbar-right">
+            <button id="downloadPDF" class="btn-action btn-export">⬇ Export PDF</button>
+            <button id="printBtn" class="btn-action btn-print">🖨 Print</button>
+          </div>
+        </div>
+
+        <!-- CONFLICT BANNER -->
+        <div id="conflictContainer"></div>
+
+        <!-- TABS -->
+        <div class="tab-bar">
+          <button class="tab active" data-tab="class">
+            <span class="tab-icon">📋</span> Class View
+          </button>
+          <button class="tab" data-tab="teacher">
+            <span class="tab-icon">👨‍🏫</span> Teacher View
+          </button>
+          <button class="tab" data-tab="student">
+            <span class="tab-icon">🎓</span> Student View
+          </button>
+          <button class="tab" data-tab="admin">
+            <span class="tab-icon">🗂</span> Master Grid
+          </button>
+          <button class="tab" data-tab="analytics">
+            <span class="tab-icon">📊</span> Analytics
+          </button>
+        </div>
+
+        <!-- TAB PANELS -->
+        <div class="tab-panels">
+
+          <div id="tab-class" class="tab-panel active">
+            <div id="workloadChart"></div>
+            <div id="timetableContainer"></div>
+          </div>
+
+          <div id="tab-teacher" class="tab-panel" style="display:none;">
+            <div id="teacherViewContainer"></div>
+          </div>
+
+          <div id="tab-student" class="tab-panel" style="display:none;">
+            <div class="inline-filter">
+              <label class="field-label">Select Class:</label>
+              <select id="studentClassSelect"></select>
+            </div>
+            <div id="studentViewContainer"></div>
+          </div>
+
+          <div id="tab-admin" class="tab-panel" style="display:none;">
+            <div id="adminGridContainer"></div>
+          </div>
+
+          <div id="tab-analytics" class="tab-panel" style="display:none;">
+            <div id="analyticsContainer"></div>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-left">
+        <strong class="footer-brand">NM-Scheduler</strong>
+        <span>Intelligent Academic Timetabling System</span>
+      </div>
+      <div class="footer-center">
+        SVKM's NMIMS University &nbsp;·&nbsp; © 2026
+      </div>
+      <div class="footer-right">
+        Designed and Developed by <strong>Anoushka Sarkar</strong>
+      </div>
+    </div>
+  </footer>
+
+  <!-- TOAST -->
+  <div id="toast" class="toast" aria-live="polite"></div>
+
+  <!-- Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+  <script src="script.js"></script>
+
+</body>
+</html>
